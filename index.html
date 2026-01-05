@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- CSS einbinden -->
+     <link rel="stylesheet" href="styles.css">
+
+    <!-- JavaScript einbinden -->
+      <script src="app.js" defer></script>
+
+</head>
+
+<body>
+ <header>
+    <div class="logo">🌍</div>
+    <h1>Global CO₂ Footprint</h1>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<main>
+ <!-- Seitenmenü -->
+    <aside class="sidebar">
+        <h3>Navigation</h3>
+        <ul>
+            <li><a href="#">Übersicht</a></li>
+            <li><a href="#">Staat</a></li>
+            <li><a href="#">Unternehmen</a></li>
+        </ul>
+
+        <!-- RTL/LTR Einstellung -->
+        <button id="toggleDir">Switch LTR / RTL</button>
+    </aside>
+
+    <!-- Hauptinhalt -->
+    <section class="content">
+        <h2>CO₂ Footprint</h2>
+
+        <!-- Filterfelder -->
+        <input type="text" id="filterCountry" placeholder="Nach Staat filtern">
+        <input type="text" id="filterCompany" placeholder="Nach Unternehmen filtern">
+
+        <!-- Tabelle -->
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th data-column="country">Staat</th>
+                    <th data-column="company">Unternehmen</th>
+                    <th data-column="year">Jahr</th>
+                    <th data-column="emission">CO₂</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </section>
+</main>
+
+
+<footer>
+    <p>© 2025  CO₂ Übersicht | <a href="#">Impressum</a> | <a href="#">Datenschutz</a></p>
+</footer>
+
+</body>
+</html>
