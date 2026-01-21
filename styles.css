@@ -1,4 +1,7 @@
-/* ===== Grunddesign ===== */
+/*
+Bootstrap übernimmt das Grundlayout
+CSS ergänzt nur Farben, Flexbox für Sidebar + Content, RTL-Unterstützung
+*/
 
 body {
     margin: 0;
@@ -6,32 +9,22 @@ body {
     background-color: #f5f5f5;
 }
 
+
 header {
-    background-color: #004d40; /* dunkles Grün */
+    background-color: #004d40;
     color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-header .logo {
-    font-size: 2rem;
-    margin-right: 1rem;
-}
-
-header nav a {
+header a {
     color: white;
-    margin-left: 1rem;
-    text-decoration: none;
 }
 
-header nav a:hover {
+header a:hover {
     text-decoration: underline;
 }
 
-/* ===== Hauptlayout ===== */
 
+/* main ist der Flex-Container, damit Sidebar neben Content bleibt */
 main {
     display: flex;
     padding: 1rem;
@@ -41,85 +34,49 @@ main {
 .sidebar {
     width: 220px;
     background-color: #e0f2f1;
-    padding: 1rem;
-    border-radius: 8px;
 }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 0.5rem;
-}
 
 .sidebar a {
-    text-decoration: none;
     color: #004d40;
 }
 
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+
 .content {
-    flex: 1; /* nimmt restlichen Platz ein */
+    flex: 1;
+    min-width: 0;
     background-color: white;
     padding: 1rem;
     border-radius: 8px;
 }
 
-/* ===== RTL-Unterstützung ===== */
-
+/* RTL-Unterstützung */
 html[dir="rtl"] main {
     flex-direction: row-reverse;
 }
 
-
-/* ===== Tabelle ===== */
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
-
-th, td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background-color: #e0f2f1;
+#dataTable th {
     cursor: pointer;
 }
 
-th:hover {
+#dataTable th:hover {
     background-color: #b2dfdb;
-}
-
-
-/* ===== Filterfelder ===== */
-
-input[type="text"] {
-    padding: 6px;
-    margin-right: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 footer {
     background-color: #004d40;
     color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: 1rem;
 }
 
 footer a {
     color: #b2dfdb;
 }
 
-/* ===== Responsive Design ===== */
-
+/*  Responsive Design */
 @media (max-width: 768px) {
     main {
         flex-direction: column;
@@ -128,5 +85,12 @@ footer a {
     .sidebar {
         width: 100%;
     }
+    
+
 }
 
+@media (max-width: 480px) {
+    header, footer {
+        text-align: bottom center;
+    }
+}

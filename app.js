@@ -30,20 +30,35 @@ const filterCountry = document.querySelector("#filterCountry");
 const filterCompany = document.querySelector("#filterCompany");
 const toggleDir = document.querySelector("#toggleDir");
 
-// ===============================
+// enthält immer die aktuell angezeigten Zeilen (nach Filter)
+let currentRows = [...data];
+
+// Sortierung: 1 = aufsteigend, -1 = absteigend
+let sortDirection = 1;
+
+// merkt sich die zuletzt sortierte Spalte (z. B. "country")
+let currentSortColumn = null;
+
 //  Sicherheitsfunktion: Kein injizierter Code
-// ===============================
 function sanitize(text) {
     const div = document.createElement("div");
     div.textContent = text;     // verwandelt alles in reinen Text
     return div.textContent;
 }
 
-// ===============================
 //  Tabelle rendern
-// ===============================
 function renderTable(rows) {
     tableBody.innerHTML = "";
+
+     if (rows.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 4;
+        td.textContent = "Keine Treffer – bitte Suchbegriff anpassen.";
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+        return;
+    }
 
     rows.forEach(item => {
         const tr = document.createElement("tr");
@@ -57,49 +72,71 @@ function renderTable(rows) {
     });
 }
 
-// Erste Anzeige der Tabelle
-renderTable(data);
 
-// ===============================
+function sortRows(column) {
+  currentRows.sort((a, b) => {
+    const av = a[column];
+    const bv = b[column];
+
+    // Zahlen sauber vergleichen (year, emission)
+    if (typeof av === "number" && typeof bv === "number") {
+      return (av - bv) * sortDirection;
+    }
+
+    // Text vergleichen (country, company)
+    // localeCompare ist besser bei Umlauten etc.
+    return String(av).localeCompare(String(bv), "de",
+    { sensitivity: "base" }) * sortDirection;
+  });
+
+  renderTable(currentRows);
+}
+
+
+
 //  Filtern nach Land & Unternehmen
-// ===============================
 function applyFilters() {
-    const country = filterCountry.value.toLowerCase();
-    const company = filterCompany.value.toLowerCase();
+    const country = filterCountry.value.trim().toLowerCase();
+    const company = filterCompany.value.trim().toLowerCase();
 
-    const filtered = data.filter(item =>
+    currentRows = data.filter(item =>
         item.country.toLowerCase().includes(country) &&
         item.company.toLowerCase().includes(company)
     );
 
-    renderTable(filtered);
+     if (currentSortColumn) {
+    sortRows(currentSortColumn);
+  } else {
+    renderTable(currentRows);
+  }
 }
 
 filterCountry.addEventListener("input", applyFilters);
 filterCompany.addEventListener("input", applyFilters);
 
-// ===============================
-//  Sortieren der Tabelle
-// ===============================
-let sortDirection = 1;
-
 document.querySelectorAll("#dataTable th").forEach(th => {
-    th.addEventListener("click", () => {
-        const column = th.dataset.column;
+  th.addEventListener("click", () => {
+    const column = th.dataset.column;
 
-        data.sort((a, b) => {
-            return a[column] > b[column] ? sortDirection : -sortDirection;
-        });
+    // gleiche Spalte: Richtung wechseln
+    // neue Spalte: Richtung zurück auf aufsteigend setzen
+    if (currentSortColumn === column) {
+      sortDirection *= -1;
+    } else {
+      currentSortColumn = column;
+      sortDirection = 1;
+    }
 
-        sortDirection *= -1;
-        renderTable(data);
-    });
+    sortRows(column);
+  });
 });
 
-// ===============================
-//  LTR / RTL Umschalten
-// ===============================
+
+
+//  Leserichtung ändern
 toggleDir.addEventListener("click", () => {
     const html = document.documentElement;
     html.dir = html.dir === "ltr" ? "rtl" : "ltr";
 });
+
+renderTable(currentRows);
